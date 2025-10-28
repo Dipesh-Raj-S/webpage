@@ -3,38 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriSense — Crop Disease Info</title>
+  <title>AgriSense — Regional Crop Disease Info</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;font-family:'Poppins',sans-serif;}
-    body{margin:0;background:linear-gradient(180deg,#f7fff9,#d8f5e1);color:#043a18;min-height:100vh;display:flex;flex-direction:column;}
-    header{text-align:center;padding:2rem 1rem;background:linear-gradient(90deg,#2bd072,#1ab15a);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-    header h1{margin:0;font-size:2rem;}
-    header p{margin-top:0.3rem;color:#eaffec;}
+    body{margin:0;background:linear-gradient(180deg,#f5fff8,#eaf8ef);
+         color:#043a18;min-height:100vh;display:flex;flex-direction:column;}
+    header{text-align:center;padding:2rem 1rem;
+           background:linear-gradient(180deg,#e8f9f0 0%,#d9f5e3 100%);
+           border-bottom:1px solid rgba(0,0,0,0.05);
+           box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+    header h1{margin:0;color:#038c4c;font-size:2rem;}
+    header p{margin-top:0.3rem;color:#066f34;}
     .container{max-width:1200px;margin:2rem auto;padding:1rem;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
-    .card{background:#fff;border-radius:14px;padding:1rem;box-shadow:0 8px 20px rgba(0,0,0,0.08);transition:0.3s;}
-    .card:hover{transform:translateY(-6px);box-shadow:0 10px 26px rgba(0,0,0,0.15);}
-    .images{display:flex;gap:0.5rem;}
-    .images img{width:50%;height:160px;object-fit:cover;border-radius:10px;transition:0.3s;}
-    .images img:hover{transform:scale(1.05);}
-    .card h3{color:#038c4c;margin:0.8rem 0 0.4rem;font-size:1.2rem;}
+    .card{background:#fff;border-radius:16px;padding:1rem;
+          box-shadow:0 4px 10px rgba(0,0,0,0.08);
+          transition:transform .3s,box-shadow .3s;}
+    .card:hover{transform:translateY(-6px);
+                box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+    .images img{width:100%;height:180px;object-fit:cover;border-radius:10px;
+                transition:transform .3s;}
+    .images img:hover{transform:scale(1.04);}
+    .card h3{color:#038c4c;margin:0.8rem 0 0.4rem;font-size:1.15rem;font-weight:600;}
     .card p{font-size:0.95rem;margin:0.3rem 0;line-height:1.4rem;}
-    .btn,.organic-btn,.inorganic-btn{border:none;border-radius:10px;padding:0.7rem 1.3rem;cursor:pointer;font-weight:600;transition:0.3s;}
-    .btn:hover,.organic-btn:hover,.inorganic-btn:hover{transform:translateY(-3px);}
-    .organic-btn{background:linear-gradient(90deg,#3ad86b,#1dbf58);color:#fff;margin-right:0.4rem;}
-    .inorganic-btn{background:linear-gradient(90deg,#5cb3ff,#2a8fff);color:#fff;}
-    footer{text-align:center;color:#256239;padding:1rem;font-size:0.9rem;border-top:1px solid rgba(0,0,0,0.1);margin-top:auto;}
-    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;}
-    .modal-content{position:relative;background:#fff;padding:2rem 1.5rem;border-radius:14px;max-width:480px;width:95%;box-shadow:0 6px 20px rgba(0,0,0,0.25);}
-    .close-x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:#fff;font-size:1.4rem;color:#333;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
+    .organic-btn,.inorganic-btn{border:none;border-radius:10px;padding:0.6rem 1.3rem;
+         cursor:pointer;font-weight:600;transition:.3s;color:#fff;}
+    .organic-btn{background:linear-gradient(90deg,#3ad86b,#1dbf58);margin-right:.5rem;}
+    .inorganic-btn{background:linear-gradient(90deg,#5cb3ff,#2a8fff);}
+    .organic-btn:hover,.inorganic-btn:hover{transform:translateY(-3px);
+         box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+    footer{text-align:center;color:#256239;padding:1rem;font-size:.9rem;
+         border-top:1px solid rgba(0,0,0,0.1);
+         background:linear-gradient(180deg,#eaf8ef,#f5fff8);margin-top:auto;}
+    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;
+         background:rgba(0,0,0,0.4);justify-content:center;align-items:center;}
+    .modal-content{position:relative;background:#fff;padding:2rem 1.5rem;border-radius:16px;
+         max-width:480px;width:95%;box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+    .close-x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;
+         border:none;background:#fff;font-size:1.4rem;color:#333;cursor:pointer;
+         box-shadow:0 2px 8px rgba(0,0,0,0.12);}
     .close-x:hover{color:#f44336;}
     .steps ul{padding-left:1.2rem;}
-    .steps li{margin-bottom:0.4rem;}
+    .steps li{margin-bottom:.4rem;}
     .extra-links{text-align:center;margin-top:1rem;}
-    .tool-btn,.chem-btn{background:linear-gradient(90deg,#46c7f0,#1b98e0);color:#fff;border:none;border-radius:10px;padding:0.6rem 1.2rem;margin:0.3rem;font-weight:600;transition:0.3s;}
-    .tool-btn:hover,.chem-btn:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(27,152,224,0.4);}
-    .ai-button{display:inline-block;background:linear-gradient(90deg,#ff512f,#dd2476);color:white;font-weight:700;font-size:1.1rem;border:none;border-radius:12px;padding:1rem 2rem;cursor:pointer;box-shadow:0 6px 18px rgba(255,0,100,0.3);transition:0.3s;}
+    .tool-btn,.chem-btn{background:linear-gradient(90deg,#46c7f0,#1b98e0);
+         color:#fff;border:none;border-radius:10px;padding:0.6rem 1.2rem;
+         margin:0.3rem;font-weight:600;transition:.3s;}
+    .tool-btn:hover,.chem-btn:hover{transform:translateY(-3px);
+         box-shadow:0 4px 12px rgba(27,152,224,0.4);}
+    .ai-button{display:inline-block;background:linear-gradient(90deg,#ff512f,#dd2476);
+         color:white;font-weight:700;font-size:1.1rem;border:none;border-radius:12px;
+         padding:1rem 2rem;cursor:pointer;box-shadow:0 6px 18px rgba(255,0,100,0.3);
+         transition:transform .3s, box-shadow .3s;}
     .ai-button:hover{transform:scale(1.05);box-shadow:0 8px 22px rgba(255,0,100,0.5);}
   </style>
 </head>
@@ -45,11 +66,12 @@
   </header>
 
   <div class="container">
-    <h2 style="text-align:center;color:#038c4c;">Top 10 Common Diseases in Your Region</h2>
+    <h2 style="text-align:center;color:#038c4c;">Top 5 Common Diseases in Your Region</h2>
     <div class="grid" id="diseaseGrid"></div>
 
     <div style="text-align:center;margin-top:3rem;">
-      <button class="ai-button" onclick="goToAI()">🤖 Still not sure about your crop’s disease?<br><span style="font-size:1.2rem;">Click here to find out using AI</span></button>
+      <button class="ai-button" onclick="goToAI()">🤖 Still not sure about your crop’s disease?<br>
+        <span style="font-size:1.2rem;">Click here to find out using AI</span></button>
     </div>
   </div>
 
@@ -69,57 +91,56 @@
   </div>
 
   <script>
-    // ✅ Diseases organized by region
-    const regionalDiseases = {
-      "Tamil Nadu": ["Rice Blast","Bacterial Leaf Blight (Rice)","Groundnut Leaf Spot","Chili Leaf Curl Virus","Sugarcane Red Rot","Banana Sigatoka Leaf Spot","Leaf Spot of Cotton","Tikka Leaf Spot","Tomato Leaf Curl","Powdery Mildew"],
-      "Karnataka": ["Rice Blast","Bacterial Leaf Blight (Rice)","Maize Rust","Groundnut Leaf Spot","Late Blight","Sugarcane Red Rot","Turmeric Leaf Blotch","Paddy Sheath Blight","Wheat Rust","Powdery Mildew"],
-      "Kerala": ["Banana Sigatoka Leaf Spot","Citrus Canker","Rice Blast","Bacterial Leaf Blight (Rice)","Chili Leaf Curl Virus","Pepper Quick Wilt","Coconut Bud Rot","Powdery Mildew","Colletotrichum Leaf Spot","Late Blight"],
-      "Maharashtra": ["Late Blight","Rice Blast","Citrus Canker","Groundnut Leaf Spot","Maize Rust","Sugarcane Red Rot","Powdery Mildew","Bacterial Leaf Blight","Tomato Mosaic Virus","Chili Leaf Curl Virus"],
-      "Punjab": ["Wheat Rust","Maize Rust","Late Blight","Powdery Mildew","Leaf Spot","Stem Rust","Rice Blast","Smut of Paddy","Bacterial Leaf Blight","Yellow Rust"],
-      "Uttar Pradesh": ["Rice Blast","Bacterial Leaf Blight (Rice)","Late Blight","Citrus Canker","Sugarcane Red Rot","Powdery Mildew","Maize Rust","Wheat Rust","Groundnut Leaf Spot","Tikka Leaf Spot"],
-      "Gujarat": ["Groundnut Leaf Spot","Tikka Leaf Spot","Citrus Canker","Powdery Mildew","Rice Blast","Bacterial Leaf Blight (Rice)","Maize Rust","Downy Mildew","Leaf Curl Virus","Sugarcane Red Rot"],
-      "West Bengal": ["Rice Blast","Bacterial Leaf Blight (Rice)","Sheath Blight","Brown Spot of Rice","Late Blight","Powdery Mildew","Maize Rust","Groundnut Leaf Spot","Banana Sigatoka Leaf Spot","Citrus Canker"],
-      "Andhra Pradesh": ["Rice Blast","Bacterial Leaf Blight (Rice)","Groundnut Leaf Spot","Sugarcane Red Rot","Chili Leaf Curl Virus","Late Blight","Banana Sigatoka Leaf Spot","Powdery Mildew","Citrus Canker","Tikka Leaf Spot"],
-      "Madhya Pradesh": ["Late Blight","Powdery Mildew","Groundnut Leaf Spot","Rice Blast","Maize Rust","Citrus Canker","Bacterial Leaf Blight","Tikka Leaf Spot","Wheat Rust","Sugarcane Red Rot"]
-    };
+  // ✅ Regional disease data (same, but we'll only display 5)
+  const regionalDiseases={
+    "Tamil Nadu":["Rice Blast","Bacterial Leaf Blight (Rice)","Groundnut Leaf Spot","Chili Leaf Curl Virus","Sugarcane Red Rot"],
+    "Karnataka":["Rice Blast","Bacterial Leaf Blight (Rice)","Maize Rust","Groundnut Leaf Spot","Late Blight"],
+    "Kerala":["Banana Sigatoka Leaf Spot","Citrus Canker","Rice Blast","Bacterial Leaf Blight (Rice)","Chili Leaf Curl Virus"],
+    "Maharashtra":["Late Blight","Rice Blast","Citrus Canker","Groundnut Leaf Spot","Maize Rust"],
+    "Punjab":["Wheat Rust","Maize Rust","Late Blight","Powdery Mildew","Rice Blast"],
+    "Uttar Pradesh":["Rice Blast","Bacterial Leaf Blight (Rice)","Late Blight","Citrus Canker","Sugarcane Red Rot"],
+    "Gujarat":["Groundnut Leaf Spot","Tikka Leaf Spot","Citrus Canker","Powdery Mildew","Rice Blast"],
+    "West Bengal":["Rice Blast","Bacterial Leaf Blight (Rice)","Brown Spot of Rice","Late Blight","Powdery Mildew"],
+    "Andhra Pradesh":["Rice Blast","Bacterial Leaf Blight (Rice)","Groundnut Leaf Spot","Sugarcane Red Rot","Chili Leaf Curl Virus"],
+    "Madhya Pradesh":["Late Blight","Powdery Mildew","Groundnut Leaf Spot","Rice Blast","Maize Rust"]
+  };
 
-    const params = new URLSearchParams(window.location.search);
-    const regionName = params.get("region") || "India";
-    document.getElementById("regionInfo").innerHTML = `Based on your region: <b>${regionName}</b>`;
+  const params=new URLSearchParams(window.location.search);
+  const regionName=params.get("region")||"India";
+  document.getElementById("regionInfo").innerHTML=`Based on your region: <b>${regionName}</b>`;
 
-    const diseases = regionalDiseases[regionName] || ["Rice Blast","Late Blight","Powdery Mildew","Maize Rust","Groundnut Leaf Spot","Citrus Canker","Banana Sigatoka Leaf Spot","Chili Leaf Curl Virus","Bacterial Leaf Blight","Sugarcane Red Rot"];
+  const diseases=(regionalDiseases[regionName]||["Rice Blast","Late Blight","Powdery Mildew","Maize Rust","Groundnut Leaf Spot"]).slice(0,5);
 
-    const grid=document.getElementById("diseaseGrid");
-    diseases.forEach(name=>{
-      const card=document.createElement("div");
-      card.className="card";
-      const img1=`images/${name.toLowerCase().replace(/\s|\(|\)/g,'_')}_1.jpg`;
-      const img2=`images/${name.toLowerCase().replace(/\s|\(|\)/g,'_')}_2.jpg`;
-      card.innerHTML=`<div class="images">
-        <img src="${img1}" alt="${name}">
-        <img src="${img2}" alt="${name}">
-      </div>
-      <h3>${name}</h3>
-      <p><b>Region:</b> ${regionName}</p>
-      <p><b>Status:</b> Treatable ✅</p>
-      <button class="organic-btn" onclick="openRemedy('${name}','organic')">Organic Remedy 🌱</button>
-      <button class="inorganic-btn" onclick="openRemedy('${name}','inorganic')">Inorganic Remedy 🧪</button>`;
-      grid.appendChild(card);
-    });
+  const grid=document.getElementById("diseaseGrid");
+  diseases.forEach(name=>{
+    const card=document.createElement("div");
+    card.className="card";
+    const img=`images/${name.toLowerCase().replace(/\s|\(|\)/g,'_')}_1.jpg`;
+    card.innerHTML=`<div class="images">
+      <img src="${img}" alt="${name}">
+    </div>
+    <h3>${name}</h3>
+    <p><b>Region:</b> ${regionName}</p>
+    <p><b>Status:</b> Treatable ✅</p>
+    <button class="organic-btn" onclick="openRemedy('${name}','organic')">Organic Remedy 🌱</button>
+    <button class="inorganic-btn" onclick="openRemedy('${name}','inorganic')">Inorganic Remedy 🧪</button>`;
+    grid.appendChild(card);
+  });
 
-    let toolLink="",chemLink="";
-    function openRemedy(name,type){
-      document.getElementById("diseaseTitle").innerText=`${type==='organic'?'🌱 Organic':'🧪 Inorganic'} Remedy — ${name}`;
-      document.getElementById("remedyContent").innerHTML=`<p><b>✍️ Description:</b> Remedy guidance varies by crop and soil type.</p>
-      <div class='steps'><b>🧾 Steps:</b><ul><li>Use recommended ${type==='organic'?'bio-inputs':'chemical control'} suited for ${name}.</li><li>Spray every 5–10 days depending on severity.</li><li>Maintain soil moisture and remove affected parts.</li></ul></div>
-      <p><b>⏳ Duration:</b> 3–4 weeks depending on infection.</p>
-      <p><b>🌾 Land Area Guidance:</b><br>• <1 acre: 15–20 L mix<br>• 1–5 acres: 80–100 L<br>• >5 acres: scale proportionally.</p>`;
-      toolLink="https://www.amazon.in/s?k=farming+tools"; chemLink="https://www.amazon.in/s?k=agriculture+medicine";
-      document.getElementById("remedyModal").style.display="flex";
-    }
-    function closeModal(){document.getElementById("remedyModal").style.display="none";}
-    window.onclick=e=>{if(e.target==document.getElementById("remedyModal"))closeModal();}
-    function goToAI(){window.location.href="ai_recognition.html";}
+  let toolLink="",chemLink="";
+  function openRemedy(name,type){
+    document.getElementById("diseaseTitle").innerText=`${type==='organic'?'🌱 Organic':'🧪 Inorganic'} Remedy — ${name}`;
+    document.getElementById("remedyContent").innerHTML=`<p><b>✍️ Description:</b> Remedy guidance varies by crop and soil type.</p>
+    <div class='steps'><b>🧾 Steps:</b><ul><li>Use recommended ${type==='organic'?'bio-inputs':'chemical control'} suited for ${name}.</li><li>Spray every 5–10 days depending on severity.</li><li>Maintain soil moisture and remove affected parts.</li></ul></div>
+    <p><b>⏳ Duration:</b> 3–4 weeks depending on infection.</p>
+    <p><b>🌾 Land Area Guidance:</b><br>• <1 acre: 15–20 L mix<br>• 1–5 acres: 80–100 L<br>• >5 acres: scale proportionally.</p>`;
+    toolLink="https://www.amazon.in/s?k=farming+tools";
+    chemLink="https://www.amazon.in/s?k=agriculture+medicine";
+    document.getElementById("remedyModal").style.display="flex";
+  }
+  function closeModal(){document.getElementById("remedyModal").style.display="none";}
+  window.onclick=e=>{if(e.target==document.getElementById("remedyModal"))closeModal();}
+  function goToAI(){window.location.href="ai_recognition.html";}
   </script>
 </body>
 </html>
