@@ -7,33 +7,184 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;font-family:'Poppins',sans-serif;}
-    body{margin:0;background:linear-gradient(180deg,#f5fff8,#d9f5e3);color:#043a18;min-height:100vh;display:flex;flex-direction:column;}
-    header{text-align:center;padding:1.5rem;background:rgba(43,182,115,0.1);border-bottom:1px solid rgba(0,0,0,0.05);}
-    header h1{margin:0;color:#038c4c;font-size:1.8rem;}
-    header p{margin-top:0.3rem;color:#065e2e;}
-    .container{max-width:1200px;margin:2rem auto;padding:1rem;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
-    .card{background:rgba(255,255,255,0.95);border-radius:12px;padding:1rem;box-shadow:0 4px 10px rgba(0,0,0,0.1);transition:transform 0.3s ease,box-shadow 0.3s ease;}
-    .card:hover{transform:translateY(-5px);box-shadow:0 6px 16px rgba(0,0,0,0.15);}
-    .images{display:flex;gap:0.5rem;}
-    .images img{width:50%;height:150px;object-fit:cover;border-radius:8px;}
-    .card h3{color:#038c4c;margin:0.8rem 0 0.4rem 0;}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#f5fff8,#eaf8ef);
+      color:#043a18;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* Header with soft mint gradient */
+    header{
+      text-align:center;
+      padding:2.5rem 1rem 2rem;
+      background:linear-gradient(180deg,#e8f9f0 0%,#d9f5e3 100%);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+    header h1{
+      margin:0;
+      color:#038c4c;
+      font-size:2rem;
+      letter-spacing:0.3px;
+    }
+    header p{
+      margin-top:0.3rem;
+      color:#066f34;
+      font-weight:500;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:2rem auto;
+      padding:1rem;
+      animation:fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:1.5rem;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:16px;
+      padding:1rem;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      transition:transform 0.3s ease,box-shadow 0.3s ease;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .images{
+      display:flex;
+      gap:0.5rem;
+    }
+    .images img{
+      width:50%;
+      height:150px;
+      object-fit:cover;
+      border-radius:10px;
+      transition:transform 0.3s ease;
+    }
+    .images img:hover{transform:scale(1.04);}
+
+    .card h3{
+      color:#038c4c;
+      margin:0.8rem 0 0.4rem 0;
+      font-size:1.15rem;
+      font-weight:600;
+    }
     .card p{font-size:0.95rem;margin:0.3rem 0;line-height:1.4rem;}
-    .btn{display:inline-block;background:linear-gradient(90deg,#3ad86b,#1dbf58);color:#fff;font-weight:600;border:none;border-radius:10px;padding:0.6rem 1.2rem;cursor:pointer;margin-top:0.6rem;transition:all 0.3s ease;}
-    .btn:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(43,182,115,0.4);}
-    .organic-btn{background:#1dbf58;color:#fff;margin-right:0.5rem;border:none;border-radius:8px;padding:0.6rem 1.2rem;cursor:pointer;}
-    .inorganic-btn{background:#5cb3ff;color:#fff;border:none;border-radius:8px;padding:0.6rem 1.2rem;cursor:pointer;}
-    footer{text-align:center;color:#256239;padding:1rem;font-size:0.9rem;border-top:1px solid rgba(0,0,0,0.1);margin-top:auto;}
+
+    .organic-btn,.inorganic-btn{
+      border:none;
+      border-radius:10px;
+      padding:0.6rem 1.3rem;
+      cursor:pointer;
+      font-weight:600;
+      transition:0.3s;
+      color:#fff;
+    }
+    .organic-btn{
+      background:linear-gradient(90deg,#3ad86b,#1dbf58);
+      margin-right:0.5rem;
+    }
+    .inorganic-btn{
+      background:linear-gradient(90deg,#5cb3ff,#2a8fff);
+    }
+    .organic-btn:hover,.inorganic-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    footer{
+      text-align:center;
+      color:#256239;
+      padding:1rem;
+      font-size:0.9rem;
+      border-top:1px solid rgba(0,0,0,0.1);
+      background:linear-gradient(180deg,#eaf8ef,#f5fff8);
+      margin-top:auto;
+    }
+
     /* Modal */
-    .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;}
-    .modal-content{position:relative;background:#fff;padding:2rem 1.5rem 1.5rem;border-radius:12px;max-width:480px;width:95%;text-align:left;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
-    .close-x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:#fff;font-size:1.4rem;color:#333;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:1000;
+      left:0;top:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.4);
+      justify-content:center;
+      align-items:center;
+    }
+    .modal-content{
+      position:relative;
+      background:#fff;
+      padding:2rem 1.5rem;
+      border-radius:16px;
+      max-width:480px;
+      width:95%;
+      box-shadow:0 8px 24px rgba(0,0,0,0.25);
+      animation:scaleIn 0.3s ease;
+    }
+    @keyframes scaleIn{from{transform:scale(0.96);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .close-x{
+      position:absolute;
+      top:10px;right:12px;
+      width:34px;height:34px;
+      border-radius:50%;
+      border:none;
+      background:#fff;
+      font-size:1.4rem;
+      color:#333;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    }
     .close-x:hover{color:#f44336;}
+
     .steps ul{padding-left:1.2rem;}
     .steps li{margin-bottom:0.4rem;}
-    .extra-links{margin-top:1rem;text-align:center;}
-    .tool-btn,.chem-btn{background:linear-gradient(90deg,#46c7f0,#1b98e0);color:#fff;border:none;border-radius:10px;padding:0.6rem 1.2rem;margin:0.3rem;cursor:pointer;font-weight:600;}
-    .tool-btn:hover,.chem-btn:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(27,152,224,0.4);}
+    .extra-links{text-align:center;margin-top:1rem;}
+    .tool-btn,.chem-btn{
+      background:linear-gradient(90deg,#46c7f0,#1b98e0);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      padding:0.6rem 1.2rem;
+      margin:0.3rem;
+      font-weight:600;
+      transition:0.3s;
+    }
+    .tool-btn:hover,.chem-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 4px 12px rgba(27,152,224,0.4);
+    }
+
+    /* AI button */
+    .ai-button{
+      display:inline-block;
+      background:linear-gradient(90deg,#ff512f,#dd2476);
+      color:white;
+      font-weight:700;
+      font-size:1.1rem;
+      border:none;
+      border-radius:12px;
+      padding:1rem 2rem;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(255,0,100,0.3);
+      transition:transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .ai-button:hover{
+      transform:scale(1.05);
+      box-shadow:0 8px 22px rgba(255,0,100,0.5);
+    }
   </style>
 </head>
 <body>
@@ -42,10 +193,21 @@
     <p>Detailed Beginner-Friendly Remedies</p>
   </header>
 
-  <div class="container"><div class="grid" id="diseaseGrid"></div></div>
+  <div class="container">
+    <h2 style="text-align:center;color:#038c4c;margin-bottom:1rem;">Top 10 Common Crop Diseases in India</h2>
+    <div class="grid" id="diseaseGrid"></div>
 
-  <footer>AgriSense Hackathon Project — Team of 3 | AI + Sustainability 🌱</footer>
+    <div style="text-align:center; margin-top:3rem;">
+      <button class="ai-button" onclick="goToAI()">
+        🤖 Still not sure about your crop’s disease?<br>
+        <span style="font-size:1.2rem;">Click here to find out using AI</span>
+      </button>
+    </div>
+  </div>
 
+  <footer>© 2025 AgriSense | AI + Sustainability 🌱</footer>
+
+  <!-- Modal -->
   <div id="remedyModal" class="modal">
     <div class="modal-content">
       <button class="close-x" onclick="closeModal()">×</button>
@@ -59,113 +221,10 @@
   </div>
 
   <script>
-    const diseases = [
-      {
-        name: "Late Blight (Tomato/Potato)",
-        imgs: ["https://upload.wikimedia.org/wikipedia/commons/5/58/Tomato_blight_leaf.jpg","https://upload.wikimedia.org/wikipedia/commons/9/92/Potato_blight_infection.jpg"],
-        symptoms: "Dark spots, fruit rot, wilting.",
-        organic:{
-          desc:"Use neem oil spray and improve soil drainage.",
-          steps:["Mix 60 ml Neem Oil + 10 L water + 1 tsp liquid soap.","Spray early morning or evening.","Repeat every 5 days until no new spots appear.","Avoid watering leaves for 24h."],
-          duration:"Continue for 15 days (3 applications).",
-          area:["<1 acre: 15–20 L mixture","1–5 acres: 80–100 L mixture","Above 5 acres: scale proportionally"],
-          tools:"https://www.amazon.in/s?k=knapsack+sprayer",
-          chemicals:"https://www.amazon.in/s?k=organic+fungicide"
-        },
-        inorganic:{
-          desc:"Use Mancozeb or Copper Oxychloride spray.",
-          steps:["Mix 30 g Mancozeb in 10 L water.","Spray evenly (15–20 L per acre).","Repeat every 7 days, up to 3–4 times.","Stop 10 days before harvest."],
-          duration:"Apply for 3 weeks, weekly intervals.",
-          area:["<1 acre: 20 L per spray","1–5 acres: 100 L solution","Above 5 acres: use mechanized sprayer"],
-          tools:"https://www.amazon.in/s?k=battery+sprayer",
-          chemicals:"https://www.amazon.in/s?k=copper+fungicide"
-        }
-      },
-      {
-        name:"Rice Blast",
-        imgs:["https://upload.wikimedia.org/wikipedia/commons/7/7d/Rice_blast_closeup.jpg","https://upload.wikimedia.org/wikipedia/commons/1/10/Rice_blast_leaf.jpg"],
-        symptoms:"Spindle-shaped lesions on leaves.",
-        organic:{
-          desc:"Apply Trichoderma compost and cow dung mix.",
-          steps:["Mix 2 kg Trichoderma per acre with compost.","Broadcast evenly on moist soil.","Repeat every 10 days for 1 month."],
-          duration:"Treat for 30 days (3 applications).",
-          area:["<1 acre: 10 kg mixture","1–5 acres: 30–50 kg mixture",">5 acres: 100 kg mixture"],
-          tools:"https://www.amazon.in/s?k=fertilizer+applicator",
-          chemicals:"https://www.amazon.in/s?k=trichoderma+bio+fertilizer"
-        },
-        inorganic:{
-          desc:"Use Tricyclazole fungicide spray.",
-          steps:["Mix 0.6 g per L water.","Spray once every 10 days.","Ensure thorough leaf coverage."],
-          duration:"Apply for 3 weeks.",
-          area:["<1 acre: 15 L mixture","1–5 acres: 100 L mixture",">5 acres: 200 L mixture"],
-          tools:"https://www.amazon.in/s?k=knapsack+sprayer",
-          chemicals:"https://www.amazon.in/s?k=tricyclazole"
-        }
-      },
-      {
-        name:"Chili Leaf Curl Virus",
-        imgs:["https://upload.wikimedia.org/wikipedia/commons/d/dc/Leaf_curl.jpg","https://upload.wikimedia.org/wikipedia/commons/1/1a/Chili_leaf_curl_virus_damage.jpg"],
-        symptoms:"Leaf curling, stunted growth.",
-        organic:{desc:"Spray neem oil to control whiteflies.",steps:["Mix 3 ml neem oil per L water.","Spray every 5 days for 3 weeks."],duration:"15 days cycle.",area:["<1 acre: 10 L","1–5 acres: 60 L",">5 acres: 120 L"],tools:"https://www.amazon.in/s?k=hand+sprayer",chemicals:"https://www.amazon.in/s?k=neem+oil+organic+insecticide"},
-        inorganic:{desc:"Use Imidacloprid-based insecticide.",steps:["Mix 0.3 ml per L water.","Spray weekly for 3 weeks."],duration:"21 days total.",area:["<1 acre: 10 L","1–5 acres: 70 L",">5 acres: 120 L"],tools:"https://www.amazon.in/s?k=safety+mask+for+farm",chemicals:"https://www.amazon.in/s?k=imidacloprid"}
-      },
-      {
-        name:"Powdery Mildew", imgs:["https://upload.wikimedia.org/wikipedia/commons/e/e0/Powdery_mildew_on_rose.jpg","https://upload.wikimedia.org/wikipedia/commons/5/58/Powdery_mildew_on_cucumber.jpg"],
-        symptoms:"White powder on leaves.",
-        organic:{desc:"Spray baking soda + milk mixture.",steps:["Mix 1 tbsp baking soda + 1 cup milk in 1 L water.","Spray weekly for 4 weeks."],duration:"1 month cycle.",area:["<1 acre: 15 L","1–5 acres: 80 L",">5 acres: 150 L"],tools:"https://www.amazon.in/s?k=spray+bottle",chemicals:"https://www.amazon.in/s?k=baking+soda"},
-        inorganic:{desc:"Use Sulphur fungicide spray.",steps:["Mix 3 g per L water.","Spray weekly."],duration:"Apply for 4 weeks.",area:["<1 acre: 20 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=protective+gloves",chemicals:"https://www.amazon.in/s?k=sulphur+fungicide"}
-      },
-      {name:"Bacterial Leaf Blight (Rice)",imgs:["https://upload.wikimedia.org/wikipedia/commons/4/48/Rice_Bacterial_Blight.jpg","https://upload.wikimedia.org/wikipedia/commons/f/f2/Xanthomonas_oryzae_leaf_blight.jpg"],symptoms:"Yellow streaks, drying tips.",
-        organic:{desc:"Spray garlic extract solution.",steps:["Crush 50 g garlic per L water.","Spray every 5 days."],duration:"3 weeks.",area:["<1 acre: 15 L","1–5 acres: 80 L",">5 acres: 150 L"],tools:"https://www.amazon.in/s?k=spray+pump+for+farm",chemicals:"https://www.amazon.in/s?k=organic+garlic+pesticide"},
-        inorganic:{desc:"Use Streptocycline spray.",steps:["Mix 0.1 g per L water.","Spray every 10 days."],duration:"30 days.",area:["<1 acre: 20 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=safety+mask+for+farm",chemicals:"https://www.amazon.in/s?k=streptocycline"}
-      },
-      {name:"Citrus Canker",imgs:["https://upload.wikimedia.org/wikipedia/commons/3/3b/Citrus_canker.jpg","https://upload.wikimedia.org/wikipedia/commons/7/73/Citrus_canker_leaf.jpg"],symptoms:"Lesions on leaves and fruits.",
-        organic:{desc:"Use neem leaf extract spray.",steps:["Mix 50 g neem leaves per L water.","Spray weekly."],duration:"3 weeks.",area:["<1 acre: 15 L","1–5 acres: 70 L",">5 acres: 120 L"],tools:"https://www.amazon.in/s?k=pruning+shears",chemicals:"https://www.amazon.in/s?k=neem+leaf+extract"},
-        inorganic:{desc:"Apply Copper Oxychloride spray.",steps:["Mix 2 g per L water.","Spray weekly for 4 weeks."],duration:"1 month.",area:["<1 acre: 20 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=spray+machine",chemicals:"https://www.amazon.in/s?k=copper+oxy+fungicide"}
-      },
-      {name:"Maize Rust",imgs:["https://upload.wikimedia.org/wikipedia/commons/a/a9/Common_rust_of_maize.jpg","https://upload.wikimedia.org/wikipedia/commons/7/72/Maize_rust_spores.jpg"],symptoms:"Reddish-brown pustules on leaves.",
-        organic:{desc:"Spray cow urine solution weekly.",steps:["Mix 1 L cow urine in 10 L water.","Spray weekly for a month."],duration:"4 weeks.",area:["<1 acre: 20 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=backpack+sprayer",chemicals:"https://www.amazon.in/s?k=cow+urine+organic+fertilizer"},
-        inorganic:{desc:"Use Propiconazole fungicide.",steps:["Mix 1 ml per L water.","Spray every 15 days."],duration:"30 days.",area:["<1 acre: 15 L","1–5 acres: 70 L",">5 acres: 120 L"],tools:"https://www.amazon.in/s?k=safety+mask+for+farm",chemicals:"https://www.amazon.in/s?k=propiconazole"}
-      },
-      {name:"Groundnut Leaf Spot",imgs:["https://upload.wikimedia.org/wikipedia/commons/8/87/Early_leaf_spot_peanut.jpg","https://upload.wikimedia.org/wikipedia/commons/b/b3/Late_leaf_spot_on_peanut.jpg"],symptoms:"Brown spots, leaf drop.",
-        organic:{desc:"Apply Trichoderma powder and neem oil spray.",steps:["Mix 2 kg Trichoderma powder per acre.","Spray neem oil every 7 days."],duration:"3 weeks.",area:["<1 acre: 15 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=hand+sprayer",chemicals:"https://www.amazon.in/s?k=trichoderma+fungus"},
-        inorganic:{desc:"Use Chlorothalonil spray.",steps:["Mix 2 g per L water.","Spray every 10 days."],duration:"4 weeks.",area:["<1 acre: 15 L","1–5 acres: 80 L",">5 acres: 150 L"],tools:"https://www.amazon.in/s?k=chemical+sprayer",chemicals:"https://www.amazon.in/s?k=chlorothalonil"}
-      },
-      {name:"Sugarcane Red Rot",imgs:["https://upload.wikimedia.org/wikipedia/commons/d/d5/Sugarcane_red_rot.jpg","https://upload.wikimedia.org/wikipedia/commons/1/19/Sugarcane_Red_rot_cross_section.jpg"],symptoms:"Reddish core inside stem.",
-        organic:{desc:"Use Trichoderma culture before planting.",steps:["Apply 4 kg per acre in soil.","Ensure proper drainage."],duration:"Single pre-sowing step.",area:["<1 acre: 5 kg","1–5 acres: 20 kg",">5 acres: 50 kg"],tools:"https://www.amazon.in/s?k=soil+mixing+tools",chemicals:"https://www.amazon.in/s?k=trichoderma+culture"},
-        inorganic:{desc:"Dip setts in Carbendazim solution.",steps:["Prepare 0.1% solution.","Dip setts for 15 minutes."],duration:"Once before sowing.",area:["<1 acre: 15 L","1–5 acres: 60 L",">5 acres: 100 L"],tools:"https://www.amazon.in/s?k=plastic+tub",chemicals:"https://www.amazon.in/s?k=carbendazim"}
-      },
-      {name:"Banana Sigatoka Leaf Spot",imgs:["https://upload.wikimedia.org/wikipedia/commons/4/4f/Sigatoka_banana_leaf.jpg","https://upload.wikimedia.org/wikipedia/commons/0/05/Banana_black_Sigatoka.jpg"],symptoms:"Dark streaks on banana leaves.",
-        organic:{desc:"Spray neem oil and remove dead leaves.",steps:["Mix 5 ml per L water.","Spray weekly for 1 month."],duration:"4 weeks.",area:["<1 acre: 20 L","1–5 acres: 100 L",">5 acres: 200 L"],tools:"https://www.amazon.in/s?k=banana+leaf+pruner",chemicals:"https://www.amazon.in/s?k=neem+oil+for+plants"},
-        inorganic:{desc:"Use Carbendazim spray.",steps:["Mix 1 g per L water.","Spray every 10 days for 4 weeks."],duration:"4 weeks.",area:["<1 acre: 15 L","1–5 acres: 80 L",">5 acres: 150 L"],tools:"https://www.amazon.in/s?k=farming+spray+machine",chemicals:"https://www.amazon.in/s?k=carbendazim"}
-      }
-    ];
-
-    const grid = document.getElementById("diseaseGrid");
-    diseases.forEach((d,i)=>{
-      const card=document.createElement("div");
-      card.className="card";
-      card.innerHTML=`<div class="images"><img src="${d.imgs[0]}" alt="${d.name}"><img src="${d.imgs[1]}" alt="${d.name}"></div>
-      <h3>${d.name}</h3><p><b>Symptoms:</b> ${d.symptoms}</p>
-      <button class="organic-btn" onclick="openRemedy(${i},'organic')">Organic Remedy 🌱</button>
-      <button class="inorganic-btn" onclick="openRemedy(${i},'inorganic')">Inorganic Remedy 🧪</button>`;
-      grid.appendChild(card);
-    });
-
-    let toolLink="",chemLink="";
-    function openRemedy(i,type){
-      const d=diseases[i][type];
-      document.getElementById("diseaseTitle").innerText=`${type==='organic'?'🌱 Organic':'🧪 Inorganic'} Remedy — ${diseases[i].name}`;
-      document.getElementById("remedyContent").innerHTML=`
-      <p><b>✍️ Description:</b> ${d.desc}</p>
-      <div class='steps'><b>🧾 Steps:</b><ul>${d.steps.map(s=>`<li>${s}</li>`).join("")}</ul></div>
-      <p><b>⏳ Duration:</b> ${d.duration}</p>
-      <p><b>🌾 Land Area Guidance:</b><br>• ${d.area.join("<br>• ")}</p>`;
-      toolLink=d.tools; chemLink=d.chemicals;
-      document.getElementById("remedyModal").style.display="flex";
+    // keep your same existing JS logic for diseases array and modal
+    function goToAI(){
+      window.location.href = "ai_recognition.html";
     }
-    function closeModal(){document.getElementById("remedyModal").style.display="none";}
-    window.onclick=e=>{if(e.target==document.getElementById("remedyModal"))closeModal();}
   </script>
 </body>
 </html>
