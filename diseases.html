@@ -59,21 +59,56 @@
     .card h3 { color: #038c4c; margin: 0.8rem 0 0.4rem 0; }
     .card p { font-size: 0.95rem; margin: 0.3rem 0; line-height: 1.4rem; }
 
+    .btn {
+      display: inline-block; background: linear-gradient(90deg, #3ad86b, #1dbf58);
+      color: #fff; font-weight: 600; border: none; border-radius: 10px;
+      padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 0.6rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,182,115,0.4); }
+
     .upload-section { text-align: center; margin-top: 2.5rem; }
     input[type="file"] {
       margin-top: 1rem; border: 1px solid rgba(0,0,0,0.2);
       padding: 0.6rem; border-radius: 10px; background: white;
     }
 
-    .btn {
-      display: inline-block; background: linear-gradient(90deg, #3ad86b, #1dbf58);
-      color: #fff; font-weight: 600; border: none; border-radius: 10px;
-      padding: 0.8rem 1.4rem; cursor: pointer; margin-top: 1.5rem;
-      transition: all 0.3s ease;
+    footer { text-align: center; color: #256239; padding: 1rem; font-size: 0.9rem; border-top: 1px solid rgba(0,0,0,0.1); margin-top: auto; }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
     }
 
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,182,115,0.4); }
-    footer { text-align: center; color: #256239; padding: 1rem; font-size: 0.9rem; border-top: 1px solid rgba(0,0,0,0.1); margin-top: auto; }
+    .modal-content {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .modal h2 { color: #038c4c; margin-top: 0; }
+    .modal button {
+      margin: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .organic-btn { background: #1dbf58; color: white; }
+    .inorganic-btn { background: #5cb3ff; color: white; }
+    .close-btn { background: #f44336; color: white; margin-top: 1rem; }
   </style>
 </head>
 
@@ -85,7 +120,6 @@
 
   <div class="container">
     <h2>Top 10 Common Crop Diseases in India</h2>
-
     <div class="grid" id="diseaseGrid"></div>
 
     <div class="upload-section">
@@ -99,62 +133,92 @@
 
   <footer>AgriSense Hackathon Project — Team of 3 | AI + Sustainability 🌱</footer>
 
+  <!-- Remedy Modal -->
+  <div id="remedyModal" class="modal">
+    <div class="modal-content">
+      <h2>Select Remedy Type</h2>
+      <p id="diseaseTitle"></p>
+      <button class="organic-btn" onclick="showRemedy('organic')">Organic 🌱</button>
+      <button class="inorganic-btn" onclick="showRemedy('inorganic')">Inorganic 🧪</button>
+      <div id="remedyResult" style="margin-top:1rem;display:none;"></div>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
   <script>
     const diseases = [
-  { name: "Late Blight (Tomato/Potato)", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/5/58/Tomato_blight_leaf.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/9/92/Potato_blight_infection.jpg"
-    ], symptoms: "Dark spots, fruit rot, wilting.", remedy: "Spray Mancozeb or Copper Oxychloride.", status: "Treatable ✅" },
-
-  { name: "Rice Blast", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rice_blast_closeup.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/1/10/Rice_blast_leaf.jpg"
-    ], symptoms: "Spindle-shaped lesions on leaves.", remedy: "Use Tricyclazole or Iprodione.", status: "Treatable ✅" },
-
-  { name: "Chili Leaf Curl Virus", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/d/dc/Leaf_curl.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/1/1a/Chili_leaf_curl_virus_damage.jpg"
-    ], symptoms: "Leaf curling, stunted growth.", remedy: "Use neem oil, control whiteflies.", status: "Treatable ✅" },
-
-  { name: "Wheat Rust", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/0/0b/Wheat_leaf_rust.JPG",
-      "https://upload.wikimedia.org/wikipedia/commons/d/dc/Wheat_rust_symptom.jpg"
-    ], symptoms: "Brown pustules on leaves.", remedy: "Apply Propiconazole.", status: "Treatable ✅" },
-
-  { name: "Bacterial Leaf Blight (Rice)", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/3/32/Rice_leaf_blight_symptoms.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/1/1e/Rice_leaf_blight.jpg"
-    ], symptoms: "Yellowing & drying leaf tips.", remedy: "Use Copper fungicides.", status: "Treatable ✅" },
-
-  { name: "Powdery Mildew", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/e/e0/Powdery_mildew_on_rose.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/5/58/Powdery_mildew_on_cucumber.jpg"
-    ], symptoms: "White powder on leaves.", remedy: "Use Sulphur-based fungicides.", status: "Treatable ✅" },
-
-  { name: "Citrus Canker", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/9/99/Citrus_canker_leaf.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/4/4c/Citrus_canker_orange.jpg"
-    ], symptoms: "Raised corky lesions on leaves.", remedy: "Apply Copper-based spray.", status: "Treatable ✅" },
-
-  { name: "Downy Mildew (Grapes)", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/2/25/Grapevine_downy_mildew.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/f/fd/Downy_mildew_grape_leaf.jpg"
-    ], symptoms: "Yellow patches on leaves.", remedy: "Use Metalaxyl or Mancozeb.", status: "Treatable ✅" },
-
-  { name: "Tikka Disease (Groundnut)", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/3/3b/Groundnut_tikka_disease_leaf.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/9/98/Groundnut_leaf_spot_disease.jpg"
-    ], symptoms: "Dark circular spots on leaves.", remedy: "Use Chlorothalonil spray.", status: "Treatable ✅" },
-
-  { name: "Fusarium Wilt", imgs: [
-      "https://upload.wikimedia.org/wikipedia/commons/6/69/Fusarium_wilt_on_banana.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/2/26/Fusarium_wilt_tomato.jpg"
-    ], symptoms: "Yellowing, wilting of plants.", remedy: "Crop rotation, soil treatment.", status: "Manageable ⚠️" }
-];
-
+      {
+        name: "Late Blight (Tomato/Potato)",
+        imgs: [
+          "https://upload.wikimedia.org/wikipedia/commons/5/58/Tomato_blight_leaf.jpg",
+          "https://upload.wikimedia.org/wikipedia/commons/9/92/Potato_blight_infection.jpg"
+        ],
+        symptoms: "Dark spots, fruit rot, wilting.",
+        status: "Treatable ✅",
+        organic: {
+          desc: "Use neem oil spray and improve soil drainage to reduce fungal spread.",
+          link: "https://www.amazon.in/s?k=neem+oil+for+plants"
+        },
+        inorganic: {
+          desc: "Apply Mancozeb or Copper Oxychloride spray for faster control.",
+          link: "https://www.amazon.in/s?k=copper+fungicide"
+        }
+      },
+      {
+        name: "Rice Blast",
+        imgs: [
+          "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rice_blast_closeup.jpg",
+          "https://upload.wikimedia.org/wikipedia/commons/1/10/Rice_blast_leaf.jpg"
+        ],
+        symptoms: "Spindle-shaped lesions on leaves.",
+        status: "Treatable ✅",
+        organic: {
+          desc: "Use organic Trichoderma compost or cow dung-based mixture.",
+          link: "https://www.amazon.in/s?k=trichoderma+bio+fertilizer"
+        },
+        inorganic: {
+          desc: "Apply Tricyclazole or Iprodione fungicide.",
+          link: "https://www.amazon.in/s?k=tricyclazole"
+        }
+      },
+      {
+        name: "Chili Leaf Curl Virus",
+        imgs: [
+          "https://upload.wikimedia.org/wikipedia/commons/d/dc/Leaf_curl.jpg",
+          "https://upload.wikimedia.org/wikipedia/commons/1/1a/Chili_leaf_curl_virus_damage.jpg"
+        ],
+        symptoms: "Leaf curling, stunted growth.",
+        status: "Treatable ✅",
+        organic: {
+          desc: "Spray neem oil and encourage ladybugs to control whiteflies.",
+          link: "https://www.amazon.in/s?k=neem+oil+organic+insecticide"
+        },
+        inorganic: {
+          desc: "Use Imidacloprid-based insecticide for quick control.",
+          link: "https://www.amazon.in/s?k=imidacloprid"
+        }
+      },
+      {
+        name: "Powdery Mildew",
+        imgs: [
+          "https://upload.wikimedia.org/wikipedia/commons/e/e0/Powdery_mildew_on_rose.jpg",
+          "https://upload.wikimedia.org/wikipedia/commons/5/58/Powdery_mildew_on_cucumber.jpg"
+        ],
+        symptoms: "White powder on leaves.",
+        status: "Treatable ✅",
+        organic: {
+          desc: "Spray mixture of baking soda + milk + water weekly.",
+          link: "https://www.amazon.in/s?k=baking+soda"
+        },
+        inorganic: {
+          desc: "Use Sulphur-based fungicides for effective control.",
+          link: "https://www.amazon.in/s?k=sulphur+fungicide"
+        }
+      }
+    ];
 
     const grid = document.getElementById("diseaseGrid");
-    diseases.forEach(d => {
+    diseases.forEach((d, i) => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -164,8 +228,8 @@
         </div>
         <h3>${d.name}</h3>
         <p><b>Symptoms:</b> ${d.symptoms}</p>
-        <p><b>Remedy:</b> ${d.remedy}</p>
         <p><b>Recommendation:</b> ${d.status}</p>
+        <button class="btn" onclick="openRemedy(${i})">View Remedies</button>
       `;
       grid.appendChild(card);
     });
@@ -176,6 +240,37 @@
 
     function goToAIDetection() {
       alert("⚙️ Redirecting to AI Detection page...");
+      // Future: redirect to ai.html
+    }
+
+    // Modal logic
+    let currentDisease = null;
+    function openRemedy(index) {
+      currentDisease = diseases[index];
+      document.getElementById("remedyModal").style.display = "flex";
+      document.getElementById("diseaseTitle").innerHTML = `<b>${currentDisease.name}</b>`;
+      document.getElementById("remedyResult").style.display = "none";
+    }
+
+    function closeModal() {
+      document.getElementById("remedyModal").style.display = "none";
+    }
+
+    function showRemedy(type) {
+      if (!currentDisease) return;
+      const remedy = currentDisease[type];
+      const box = document.getElementById("remedyResult");
+      box.style.display = "block";
+      box.innerHTML = `
+        <p><b>${type === "organic" ? "🌱 Organic Remedy:" : "🧪 Inorganic Remedy:"}</b><br>${remedy.desc}</p>
+        <a href="${remedy.link}" target="_blank" class="btn">View on Amazon</a>
+      `;
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(e) {
+      const modal = document.getElementById("remedyModal");
+      if (e.target === modal) modal.style.display = "none";
     }
   </script>
 </body>
