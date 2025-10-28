@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AgriSense — Crop Disease Info</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -44,28 +44,19 @@
 
     .card:hover { transform: translateY(-5px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
 
-    .images {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .images img {
-      width: 50%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+    .images { display: flex; gap: 0.5rem; }
+    .images img { width: 50%; height: 150px; object-fit: cover; border-radius: 8px; }
 
     .card h3 { color: #038c4c; margin: 0.8rem 0 0.4rem 0; }
     .card p { font-size: 0.95rem; margin: 0.3rem 0; line-height: 1.4rem; }
 
     .btn {
-      display: inline-block; background: linear-gradient(90deg, #3ad86b, #1dbf58);
+      display: inline-block;
+      background: linear-gradient(90deg, #3ad86b, #1dbf58);
       color: #fff; font-weight: 600; border: none; border-radius: 10px;
       padding: 0.6rem 1.2rem; cursor: pointer; margin-top: 0.6rem;
       transition: all 0.3s ease;
     }
-
     .btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,182,115,0.4); }
 
     .upload-section { text-align: center; margin-top: 2.5rem; }
@@ -86,21 +77,33 @@
       background: rgba(0,0,0,0.4);
       justify-content: center;
       align-items: center;
+      padding: 1.2rem;
     }
 
     .modal-content {
+      position: relative;
       background: #fff;
-      padding: 1.5rem;
+      /* extra top padding so the close-x does not overlap the heading */
+      padding: 1.8rem 1.5rem 1.5rem 1.5rem;
       border-radius: 12px;
       max-width: 420px;
+      width: 100%;
       text-align: center;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      animation: popIn 0.25s ease;
     }
 
-    .modal h2 { color: #038c4c; margin-top: 0; }
+    @keyframes popIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal h2 { color: #038c4c; margin: 0 0 0.6rem 0; font-size: 1.5rem; }
+    .modal p { margin: 0.25rem 0 0.8rem 0; }
+
     .modal button {
-      margin: 0.5rem;
-      padding: 0.6rem 1.2rem;
+      margin: 0.4rem;
+      padding: 0.56rem 1.05rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -108,10 +111,41 @@
     }
     .organic-btn { background: #1dbf58; color: white; }
     .inorganic-btn { background: #5cb3ff; color: white; }
-    .close-btn { background: #f44336; color: white; margin-top: 1rem; }
+
+    /* Properly positioned circular close button */
+    .close-x {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #333;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: transform 0.12s ease, color 0.12s ease, background 0.12s ease;
+      line-height: 1;
+    }
+    .close-x:hover { color: #f44336; transform: translateY(-2px); background: #fff; }
+    .close-x:focus { outline: 2px solid rgba(29, 161, 84, 0.2); }
+
+    /* Small responsive tweak so the button doesn't crowd on very small viewports */
+    @media (max-width: 380px) {
+      .modal-content { padding-top: 2rem; }
+      .close-x { top: 8px; right: 8px; width: 30px; height: 30px; font-size: 16px; }
+    }
+
+    /* Smooth fade-out class for closing */
+    .modal.fade-out { animation: fadeOut 0.18s forwards; }
+    @keyframes fadeOut { to { opacity: 0; transform: scale(0.98); } }
   </style>
 </head>
-
 <body>
   <header>
     <h1>🌿 AgriSense — Crop Disease Info</h1>
@@ -134,14 +168,18 @@
   <footer>AgriSense Hackathon Project — Team of 3 | AI + Sustainability 🌱</footer>
 
   <!-- Remedy Modal -->
-  <div id="remedyModal" class="modal">
-    <div class="modal-content">
-      <h2>Select Remedy Type</h2>
-      <p id="diseaseTitle"></p>
+  <div id="remedyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="remedyTitle">
+    <div class="modal-content" role="document">
+      <!-- updated close button: circular, accessible -->
+      <button class="close-x" id="modalCloseBtn" aria-label="Close dialog" title="Close (Esc)">×</button>
+
+      <h2 id="remedyTitle">Select Remedy Type</h2>
+      <p id="diseaseTitle" style="font-weight:600;"></p>
+
       <button class="organic-btn" onclick="showRemedy('organic')">Organic 🌱</button>
       <button class="inorganic-btn" onclick="showRemedy('inorganic')">Inorganic 🧪</button>
+
       <div id="remedyResult" style="margin-top:1rem;display:none;"></div>
-      <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
   </div>
 
@@ -240,21 +278,36 @@
 
     function goToAIDetection() {
       alert("⚙️ Redirecting to AI Detection page...");
-      // Future: redirect to ai.html
     }
 
     // Modal logic
+    const modal = document.getElementById("remedyModal");
+    const closeBtn = document.getElementById("modalCloseBtn");
     let currentDisease = null;
+
     function openRemedy(index) {
       currentDisease = diseases[index];
-      document.getElementById("remedyModal").style.display = "flex";
-      document.getElementById("diseaseTitle").innerHTML = `<b>${currentDisease.name}</b>`;
+      document.getElementById("diseaseTitle").textContent = currentDisease.name;
       document.getElementById("remedyResult").style.display = "none";
+      modal.style.display = "flex";
+      modal.classList.remove('fade-out');
+      // trap focus to modal close button for quick accessibility
+      closeBtn.focus();
+      // prevent body scroll while modal open
+      document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-      document.getElementById("remedyModal").style.display = "none";
+      // add fade-out and then hide (smooth)
+      modal.classList.add('fade-out');
+      setTimeout(() => {
+        modal.style.display = "none";
+        modal.classList.remove('fade-out');
+      }, 180);
+      document.body.style.overflow = '';
     }
+
+    closeBtn.addEventListener('click', closeModal);
 
     function showRemedy(type) {
       if (!currentDisease) return;
@@ -262,16 +315,20 @@
       const box = document.getElementById("remedyResult");
       box.style.display = "block";
       box.innerHTML = `
-        <p><b>${type === "organic" ? "🌱 Organic Remedy:" : "🧪 Inorganic Remedy:"}</b><br>${remedy.desc}</p>
-        <a href="${remedy.link}" target="_blank" class="btn">View on Amazon</a>
+        <p style="text-align:left;"><b>${type === "organic" ? "🌱 Organic Remedy:" : "🧪 Inorganic Remedy:"}</b><br>${remedy.desc}</p>
+        <a href="${remedy.link}" target="_blank" rel="noopener noreferrer" class="btn">View on Amazon</a>
       `;
     }
 
-    // Close modal when clicking outside
-    window.onclick = function(e) {
-      const modal = document.getElementById("remedyModal");
-      if (e.target === modal) modal.style.display = "none";
-    }
+    // close modal by clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // close on Escape key for accessibility
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+    });
   </script>
 </body>
 </html>
